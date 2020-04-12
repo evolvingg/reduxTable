@@ -1,0 +1,23 @@
+.tab-container {
+    width: 40%;
+    border: 1px solid green;
+    float: left;
+
+    /* grid-template-columns: repeat(4,25% );
+    grid-template-rows: repeat(3,100px); */
+
+.tab-header{
+    display: grid;
+    grid-template-columns: 40% 30% 15% 15%;
+}
+
+.tab-body {
+    .row {
+        display: grid;
+        grid-template-columns: 40% 30% 15% 15%;
+        div {
+            word-break: break-all;
+        }
+    }
+}
+}

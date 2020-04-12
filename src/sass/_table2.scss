@@ -1,0 +1,36 @@
+.tab-container-2 {
+    width: 40%;
+    margin-left: 20px;
+    border: 1px solid green;
+    float:left;
+
+    /* grid-template-columns: repeat(4,25% );
+    grid-template-rows: repeat(3,100px); */
+
+    .tab-header{
+        display: grid;
+        grid-template-columns: 40% 30% 15% 15%;
+
+    }
+
+    .tab-body {
+        display: grid;
+
+        .row {
+            display: grid;
+            grid-template-columns:100%;
+            img {
+                width: 100%;
+            }
+            div {
+                word-break: break-all;
+            }
+        }
+        
+    }
+    &:after {
+        content: '';
+        display: block;
+        clear: both;
+    }
+}
