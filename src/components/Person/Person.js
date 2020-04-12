@@ -16,6 +16,11 @@ const StyledDiv = styled.div`
 `;
 
 const person = (pr) => {
+    const rnd = Math.random();
+
+    if(rnd>0.7) {
+        throw new Error('something went wrong');
+    }
     return (
         <StyledDiv>
             <p onClick={pr.click}>I am {pr.name} and my age is {pr.age}</p>

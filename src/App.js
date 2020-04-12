@@ -1,10 +1,13 @@
 import React , { useState } from 'react';
 import logo from './logo.svg';
-import './App.css';
+//import './App.css';
 import './css/main.css';
 // import TableParent from './components/TableParent';
 import Person from './components/Person/Person';
 import styled from 'styled-components';
+import cssClasses from './App.module.css';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
+
 
 const StyledButton = styled.button`
       background-color: ${props => props.alt ? 'red' : 'green'};
@@ -160,20 +163,21 @@ class App extends React.Component {
       persons = (
           <div>
               {this.state.persons.map((person,index) => {
-                return <Person 
+                return <ErrorBoundary key={person.id}>
+                <Person 
                 name={person.name} 
                 age={person.age} 
-                key={person.id}
                 changeHandler = {(event) => this.changeHandler(event,person.id)}
                 />
+                </ErrorBoundary>
               })}
           </div>
       )
     }
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+      <div className={cssClasses.App}>
+        <header className={cssClasses.AppHeader}>
+          <img src={logo} className={cssClasses.AppLogo} alt="logo" />
         </header>
         {/* <TableParent /> */}
         {/* <button 
@@ -183,25 +187,6 @@ class App extends React.Component {
         Switch Name
         </StyledButton>
         {persons}
-        {/* {this.state.showPersons && 
-        <div>
-          <Person 
-              name={this.state.persons[0].name} 
-              age={this.state.persons[0].age}
-              />
-          <Person 
-              name={this.state.persons[1].name} 
-              age={this.state.persons[1].age}
-              click={this.clickHandler.bind(this,'MAX!!!!!!!!!!!!!!!!')}
-              changeHandler={this.changeHandler}
-              >
-                My hobbies are singing</Person>
-          <Person 
-              name={this.state.persons[2].name} 
-              age={this.state.persons[2].age}
-              />
-        </div>
-        } */}
       </div>
     );
   }
