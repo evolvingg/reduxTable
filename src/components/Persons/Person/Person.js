@@ -16,14 +16,15 @@ const StyledDiv = styled.div`
 `;
 
 const person = (pr) => {
-    const rnd = Math.random();
+    // const rnd = Math.random();
 
-    if(rnd>0.7) {
-        throw new Error('something went wrong');
-    }
+    // if(rnd>0.7) {
+    //     throw new Error('something went wrong');
+    // }
+    console.log('render in person:::');
     return (
-        <StyledDiv>
-            <p onClick={pr.click}>I am {pr.name} and my age is {pr.age}</p>
+        <StyledDiv onClick={pr.click}>
+            <p >I am {pr.name} and my age is {pr.age}</p>
             <p>{pr.children}</p>
             <input type="text" onChange = {pr.changeHandler} defaultValue={pr.name}/>
         </StyledDiv>)
