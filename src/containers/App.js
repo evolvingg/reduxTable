@@ -7,6 +7,9 @@ import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 
+import withClass from '../hoc/WithClass';
+import Aux from '../hoc/Aux';
+
 
 // const App = (props) => {
 //     const [stateArr , modifyArr] = useState(
@@ -99,7 +102,9 @@ class App extends React.Component {
       }
     ],
     otherState : '',
-    showPersons: false
+    showPersons: false,
+    showCockpit: true,
+    changeCounter: 0
   }
 
   static getDerivedStateFromProps(state,props) {
@@ -134,8 +139,15 @@ class App extends React.Component {
           person.name = event.target.value;
         return person;
     })
-    this.setState({
-      persons: persons
+    // this.setState({
+    //   persons: persons
+    // })
+
+    this.setState((prevState , props) => {
+      return {
+        persons: persons,
+        changeCounter: prevState.changeCounter + 1
+      }
     })
   }
 
@@ -157,6 +169,29 @@ class App extends React.Component {
     this.setState({showPersons: !currentState})
   }
   
+  componentDidUpdate(prevProps, prevState, snapshot ) {
+    console.log('App.js ComponentdidUpdate:::::');
+    console.log('snap::',snapshot);
+ }
+ 
+ static getDerivedStateFromProps(props, state) {
+  console.log('App.js getderivedstatefromprops::::')
+  return state;
+}
+
+shouldComponentUpdate(nextProps, nextState) {
+  console.log('App.js shouldComponentUpdate:::::');
+  return true;
+}
+
+getSnapshotBeforeUpdate() {
+  console.log('App getSnapshotBeforeUpdate:::::');
+  return ({message: 'snapshot in APP'});
+}
+
+componentWillUnmount() {
+  console.log('componwent willunmount in App');
+}
 
   render() {
     console.log('render in app:::');
@@ -184,24 +219,46 @@ class App extends React.Component {
     //       </div>
     //   )
     // }
+
+    //1st withClass HoC approach
+    // return (
+    //   <WithClass classes={cssClasses.App}>
+    //     <button onClick={() => this.setState({showCockpit: false})}>Remove cockpit</button>
+    //     {this.state.showCockpit ? (<Cockpit 
+    //                             showPersons = {this.state.showPersons} 
+    //                             toggleHandler = {this.toggleHandler}
+    //                             title = {this.props.appTitle}
+    //                             personsLength = {this.state.persons.length}/>)
+    //                             : null}
+
+    //     {this.state.showPersons && <Persons 
+    //                             persons = {this.state.persons} 
+    //                             changeHandler = {this.changeHandler}
+    //                             deletePersonHandler = {this.deletePersonHandler}/>
+    //                             }
+    //   </WithClass>
+    // );
     return (
-      <div className={cssClasses.App}>
-        <Cockpit cssClasses = {cssClasses} 
+      <Aux>
+        <button onClick={() => this.setState({showCockpit: false})}>Remove cockpit</button>
+        {this.state.showCockpit ? (<Cockpit 
                                 showPersons = {this.state.showPersons} 
                                 toggleHandler = {this.toggleHandler}
-                                title = {this.props.appTitle}/>
+                                title = {this.props.appTitle}
+                                personsLength = {this.state.persons.length}/>)
+                                : null}
 
         {this.state.showPersons && <Persons 
                                 persons = {this.state.persons} 
                                 changeHandler = {this.changeHandler}
                                 deletePersonHandler = {this.deletePersonHandler}/>
                                 }
-      </div>
+      </Aux>
     );
   }
 }
 
-export default App;
+export default withClass(App , cssClasses.App);
 
 
 
