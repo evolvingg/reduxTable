@@ -5,6 +5,8 @@ import Aux from '../../../hoc/Aux';
 import withClass from '../../../hoc/WithClass';
 import PropTypes from 'prop-types';
 
+import AuthContext from '../../../context/auth-context';
+
 const StyledDiv = styled.div`
             width: 60%;
             margin: 16px auto;
@@ -90,19 +92,22 @@ class Person extends React.Component {
         //3.
         return (
             <Aux>
-                <p onClick={this.props.click}>I am {this.props.name} and my age is {this.props.age} .Click this para</p>
-                <p>{this.props.children}</p>
-                <input 
-                    type="text" 
-                    onChange = {this.props.changeHandler} 
-                    value={this.props.name} 
-                    //ref={(inputElem) => { this.inputElement = inputElem 
-                        //setting a global propertyfor storing reference of input element
-                        //this approach works on classbased components
-                     //}}
+               <AuthContext.Consumer>
+                    {(context) => context.authenticated ? <p>Authenticated</p> : <p>Please log in!!</p>}
+                </AuthContext.Consumer> 
+            <p onClick={this.props.click}>I am {this.props.name} and my age is {this.props.age} .Click this para</p>
+            <p>{this.props.children}</p>
+            <input 
+                type="text" 
+                onChange = {this.props.changeHandler} 
+                value={this.props.name} 
+                //ref={(inputElem) => { this.inputElement = inputElem 
+                    //setting a global propertyfor storing reference of input element
+                    //this approach works on classbased components
+                //}}
 
-                     ref={this.inputElementRef}
-                    />
+                ref={this.inputElementRef}
+                />
             </Aux>
         )
     }

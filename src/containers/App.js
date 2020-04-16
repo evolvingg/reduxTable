@@ -9,6 +9,7 @@ import Cockpit from '../components/Cockpit/Cockpit';
 
 import withClass from '../hoc/WithClass';
 import Aux from '../hoc/Aux';
+import AuthContext from '../context/auth-context';
 
 
 // const App = (props) => {
@@ -33,24 +34,6 @@ import Aux from '../hoc/Aux';
 
 //     const [otherState, modifyOther] = useState('some other state')
 // console.log(stateArr,otherState);
-//     const clickHandler = () => {
-//       modifyArr({
-//               persons: [
-//                 {
-//                   name: 'Maxmillan',
-//                   age: 27
-//                 },
-//                 {
-//                   name: 'Muller',
-//                   age: 28
-//                 },
-//                 {
-//                   name: 'stephen',
-//                   age: 95
-//                 }
-//               ]
-//             })
-//           }
 //   return (
 //     <div className="App">
 //     <header className="App-header">
@@ -68,7 +51,6 @@ import Aux from '../hoc/Aux';
 //       </a>
 //     </header>
 //     {/* <TableParent /> */}
-//     <button onClick={clickHandler}>Switch Name</button>
 //     <Person name={stateArr.persons[0].name} age={stateArr.persons[0].age}/>
 //     <Person name={stateArr.persons[1].name} age={stateArr.persons[1].age}>My hobbies are singing</Person>
 //     <Person name={stateArr.persons[2].name} age={stateArr.persons[2].age}/>
@@ -104,32 +86,13 @@ class App extends React.Component {
     otherState : '',
     showPersons: false,
     showCockpit: true,
-    changeCounter: 0
+    changeCounter: 0,
+    authenticated: false
   }
 
   static getDerivedStateFromProps(state,props) {
     console.log('IN APP getderivedsta :',props);
     return state;
-  }
-
-  clickHandler = (newName) => {
-    console.log('clicked::',this);
-    this.setState({
-      persons: [
-        {
-          name: newName,
-          age: 27
-        },
-        {
-          name: 'Muller',
-          age: 28
-        },
-        {
-          name: 'stephen',
-          age: 95
-        }
-      ]
-    })
   }
 
   changeHandler = ( event, personIndex) => {
@@ -167,6 +130,10 @@ class App extends React.Component {
   toggleHandler = () => {
     const currentState = this.state.showPersons;
     this.setState({showPersons: !currentState})
+  }
+
+  loginHandler = () => {
+    this.setState({authenticated: true})
   }
   
   componentDidUpdate(prevProps, prevState, snapshot ) {
@@ -241,18 +208,28 @@ componentWillUnmount() {
     return (
       <Aux>
         <button onClick={() => this.setState({showCockpit: false})}>Remove cockpit</button>
-        {this.state.showCockpit ? (<Cockpit 
-                                showPersons = {this.state.showPersons} 
-                                toggleHandler = {this.toggleHandler}
-                                title = {this.props.appTitle}
-                                personsLength = {this.state.persons.length}/>)
-                                : null}
+          {/* 1st curly brace for dynamic expression n 2nd one is for passing object */}
+        <AuthContext.Provider value={
+          {
+            authenticated: this.state.authenticated,
+            login: this.loginHandler
+          }
+            }>   
+          {this.state.showCockpit ? (<Cockpit 
+                                  showPersons = {this.state.showPersons} 
+                                  toggleHandler = {this.toggleHandler}
+                                  title = {this.props.appTitle}
+                                  personsLength = {this.state.persons.length}
+                                  />)
+                                  : null}
 
-        {this.state.showPersons && <Persons 
-                                persons = {this.state.persons} 
-                                changeHandler = {this.changeHandler}
-                                deletePersonHandler = {this.deletePersonHandler}/>
-                                }
+          {this.state.showPersons && <Persons 
+                                  persons = {this.state.persons} 
+                                  changeHandler = {this.changeHandler}
+                                  deletePersonHandler = {this.deletePersonHandler}
+                                  />
+                                  }
+        </AuthContext.Provider>
       </Aux>
     );
   }

@@ -2,6 +2,7 @@ import React, {useEffect,useRef} from 'react';
 import logo from '../../assets/logo.svg';
 import styled from 'styled-components';
 import cssClasses from './Cockpit.module.css';
+import AuthContext from '../../context/auth-context';
 
 const StyledButton = styled.button`
       background-color: ${props => props.alt ? 'red' : 'green'};
@@ -71,6 +72,9 @@ const Cockpit = (props) => {
                     <button className={btnCls} ref={toggleButtonRef} onClick={props.toggleHandler}>
                         Switch Name
                     </button>
+                    <AuthContext.Consumer>
+                        {(context) => <button onClick={context.login} >Login</button>}
+                    </AuthContext.Consumer>
                 </div>
     )
 }
